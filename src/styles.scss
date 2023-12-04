@@ -1,1 +1,27 @@
-/* You can add global styles to this file, and also import other style files */
+@mixin font($font-family, $font-file) {
+  @font-face {
+    font-family: $font-family;
+    src: url('./assets/fonts/'+$font-file+'.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+  }
+}
+
+@include font('Pokemon', 'Pokemon-Solid');
+@include font('Nunito', 'Nunito-Regular');
+
+*,
+*::after,
+*::before {
+ box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  min-width: 100vw;
+  font-family: 'Nunito', sans-serif;
+  padding: 0 200px;
+  background: rgb(213,243,248);
+  background: linear-gradient(0deg, rgba(213,243,248,1) 0%, rgba(60,185,212,1) 100%); 
+}
