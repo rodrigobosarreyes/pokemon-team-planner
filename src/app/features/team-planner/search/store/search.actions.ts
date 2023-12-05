@@ -1,9 +1,12 @@
-import {createActionGroup, props} from '@ngrx/store';
+import {createActionGroup, emptyProps, props} from '@ngrx/store';
 import {Pokemon} from '../../../../core/models/pokemon';
 
 export const PokemonActions = createActionGroup({
   source: 'Pokemons',
   events: {
-    'Retrieved Pokemon List': props<ReadonlyArray<Pokemon>>(),
+    'Load Pokemons': emptyProps,
+    'Get Pokemons By Name': props<{name: string}>(),
+    'Load Pokemons Success': props<ReadonlyArray<Pokemon>>(),
+    'Load Pokemons Failure': props<{error: string}>(),
   },
 });
