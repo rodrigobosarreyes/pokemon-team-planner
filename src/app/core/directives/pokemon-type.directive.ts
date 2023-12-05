@@ -1,4 +1,4 @@
-import {Directive, HostBinding, Input, OnInit} from '@angular/core';
+import {Directive, HostBinding, Input} from '@angular/core';
 
 interface PokemonTypeStyle {
   background: string;
@@ -9,8 +9,12 @@ interface PokemonTypeStyle {
   selector: '[appPokemonType]',
   standalone: true,
 })
-export class PokemonTypeDirective implements OnInit {
-  @Input() appPokemonType!: string;
+export class PokemonTypeDirective {
+  @Input() set appPokemonType(typ: string) {
+    const styles = this.colors[typ];
+    this.bgColor = styles.background;
+    this.color = styles.color;
+  }
 
   @HostBinding('style.background') bgColor: string = 'none';
   @HostBinding('style.color') color: string = '#fff';
@@ -99,10 +103,4 @@ export class PokemonTypeDirective implements OnInit {
       color: '#000',
     },
   };
-
-  ngOnInit(): void {
-    const styles = this.colors[this.appPokemonType];
-    this.bgColor = styles.background;
-    this.color = styles.color;
-  }
 }

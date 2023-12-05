@@ -1,4 +1,4 @@
-import {Component, Input} from '@angular/core';
+import {Component, EventEmitter, Input, Output} from '@angular/core';
 import {PokemonTypeDirective} from '../../../../core/directives/pokemon-type.directive';
 import {Pokemon} from '../../../../core/models/pokemon';
 import {TitleCasePipe} from '@angular/common';
@@ -12,4 +12,9 @@ import {TitleCasePipe} from '@angular/common';
 })
 export class PokemonPreviewComponent {
   @Input() pokemon!: Pokemon;
+  @Output() readonly clickPokemon = new EventEmitter<Pokemon>();
+
+  onClickPokemon(pokemon: Pokemon): void {
+    this.clickPokemon.emit(pokemon);
+  }
 }

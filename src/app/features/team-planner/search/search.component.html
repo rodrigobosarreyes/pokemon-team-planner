@@ -1,3 +1,10 @@
 <div class="search-container">
-  <app-search-input (search)="onClickSearch()" />
+  <app-search-input (search)="onSearch($event)" />
+  <div class="pokemons">
+    @for (pokemon of pokemons$ | async; track $index) {
+      <div class="pokemon-card-container">
+        <app-pokemon-preview [pokemon]="pokemon" (clickPokemon)="onClickPokemon($event)" />
+      </div>
+    }
+  </div>
 </div>
