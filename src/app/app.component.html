@@ -1,5 +1,5 @@
 <h1>Team Planner</h1>
 
-<app-team-preview [team]="team" />
+<app-team-preview [team]="(team$ | async) ?? []" />
 <app-analysis />
 <app-search />

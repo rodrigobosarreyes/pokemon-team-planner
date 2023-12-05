@@ -1,10 +1,13 @@
-import {Component} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {CommonModule} from '@angular/common';
 import {RouterOutlet} from '@angular/router';
 import {TeamPreviewComponent} from './features/team-planner/team-preview/team-preview.component';
 import {AnalysisComponent} from './features/team-planner/analysis/analysis.component';
 import {SearchComponent} from './features/team-planner/search/search.component';
 import {Pokemon} from './core/models/pokemon';
+import {Store} from '@ngrx/store';
+import {selectTeam} from './core/store/team.selector';
+import {TeamActions} from './core/store/team.actions';
 
 @Component({
   selector: 'app-root',
@@ -13,7 +16,7 @@ import {Pokemon} from './core/models/pokemon';
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'pokemon-team-planner';
 
   team: Array<Pokemon> = [
@@ -54,4 +57,12 @@ export class AppComponent {
       types: ['normal', 'flying'],
     },
   ];
+
+  team$ = this.store.select(selectTeam);
+
+  constructor(private store: Store) {}
+
+  ngOnInit(): void {
+    this.store.dispatch(TeamActions.addPokemon(this.team[0]));
+  }
 }
