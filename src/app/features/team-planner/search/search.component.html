@@ -1,7 +1,11 @@
 <div class="search-container">
-  {{ page$ | async | json }}
-  <button (click)="onClickPrev()"><</button>
-  <button (click)="onClickNext()">></button>
+  {{ page | json }}
+  <app-paginator
+    [length]="(pokemonsLength$ | async) || 0"
+    [pageSize]="10"
+    [pageSizeOptions]="[5, 10, 15, 20]"
+    (page)="onChangePage($event)"
+  />
   <app-search-input (search)="onSearch($event)" />
   <div class="pokemons">
     @for (pokemon of pokemons$ | async; track $index) {

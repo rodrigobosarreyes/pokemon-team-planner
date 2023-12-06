@@ -2,8 +2,8 @@ import {Injectable} from '@angular/core';
 import {Apollo, gql} from 'apollo-angular';
 import {map} from 'rxjs';
 import {Pokemon} from '../../../core/models/pokemon';
-import {PokemonPage} from '../../../core/models/pokemon-page';
 import {PokemonState} from '../search/store/search.reducer';
+import {PageEvent} from '../../../core/models/pagination';
 
 @Injectable({
   providedIn: 'root',
@@ -35,26 +35,20 @@ export class PokemonService {
       })
       .valueChanges.pipe(
         map((res: any) => {
-          const page: PokemonPage = {
-            limit: 20,
-            currentPage: 1,
-            total: res.data.pokemon_v2_pokemon_aggregate.aggregate.count,
-            totalPages: Math.ceil(res.data.pokemon_v2_pokemon_aggregate.aggregate.count / 20),
-          };
           return {
             pokemons: this.mapResponse(res),
-            page,
+            length: res.data.pokemon_v2_pokemon_aggregate.aggregate.count,
           } as PokemonState;
         }),
       );
   }
 
-  getByName(name: string, page: PokemonPage) {
+  getByName(name: string, page: PageEvent) {
     return this.apollo
       .watchQuery({
         query: gql`{
-          pokemon_v2_pokemon(limit: ${page.limit}, offset: ${
-            page.currentPage * page.limit - page.limit
+          pokemon_v2_pokemon(limit: ${page.pageSize}, offset: ${
+            page.pageIndex * page.pageSize - page.pageSize
           }, where: {name: {_ilike: "%${name}%"}}) {
             id
             name
@@ -74,15 +68,8 @@ export class PokemonService {
       .valueChanges.pipe(
         map((res: any) => {
           return {
-            page: {
-              limit: page.limit,
-              currentPage: page.currentPage,
-              total: res.data.pokemon_v2_pokemon_aggregate.aggregate.count,
-              totalPages: Math.ceil(
-                res.data.pokemon_v2_pokemon_aggregate.aggregate.count / page.limit,
-              ),
-            },
             pokemons: this.mapResponse(res),
+            length: res.data.pokemon_v2_pokemon_aggregate.aggregate.count,
           } as PokemonState;
         }),
       );

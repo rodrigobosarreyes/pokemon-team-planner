@@ -1,0 +1,5 @@
+<div class="mat-paginator-outer-container" *ngIf="vm$ | async as vm">
+  {{ vm | json }}
+  <button (click)="previousPage()">Prev</button>
+  <button (click)="nextPage()">Next</button>
+</div>

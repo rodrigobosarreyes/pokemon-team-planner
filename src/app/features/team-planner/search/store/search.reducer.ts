@@ -1,16 +1,15 @@
 import {createReducer, on} from '@ngrx/store';
 import {Pokemon} from '../../../../core/models/pokemon';
 import {PokemonActions} from './search.actions';
-import {PokemonPage} from '../../../../core/models/pokemon-page';
 
 export interface PokemonState {
   pokemons: ReadonlyArray<Pokemon>;
-  page: PokemonPage;
+  length: number;
 }
 
 export const initialState: PokemonState = {
   pokemons: [],
-  page: {currentPage: 1, limit: 20, total: 0, totalPages: 1},
+  length: 0,
 };
 
 export const pokemonsReducer = createReducer<PokemonState>(
@@ -20,7 +19,7 @@ export const pokemonsReducer = createReducer<PokemonState>(
     const pokeList = Object.entries(pokes)
       .filter((a) => a[0] !== 'type')
       .map((a) => a[1]);
-    return {page: res.page, pokemons: pokeList};
+    return {pokemons: pokeList, length: res.length};
   }),
   on(PokemonActions.loadPokemonsFailure, (_state, {error}): PokemonState => {
     console.error(error);
@@ -29,12 +28,6 @@ export const pokemonsReducer = createReducer<PokemonState>(
   on(PokemonActions.nextPage, (_state): PokemonState => {
     const val = {
       pokemons: _state.pokemons,
-      page: {
-        currentPage: _state.page.currentPage + 1,
-        limit: _state.page.limit,
-        total: _state.page.total,
-        totalPages: _state.page.totalPages,
-      },
     } as PokemonState;
     return val;
   }),

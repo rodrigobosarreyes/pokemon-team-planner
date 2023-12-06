@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, OnInit, ViewChild} from '@angular/core';
 import {SearchInputComponent} from './search-input/search-input.component';
 import {Store} from '@ngrx/store';
 import {TeamActions} from '../../../core/store/team.actions';
@@ -6,18 +6,22 @@ import {PokemonPreviewComponent} from '../team-preview/pokemon-preview/pokemon-p
 import {Pokemon} from '../../../core/models/pokemon';
 import {PokemonActions} from './store/search.actions';
 import {CommonModule} from '@angular/common';
-import {selectPage, selectPokemons} from './store/search.selector';
+import {selectPokemons, selectPokemonsLength} from './store/search.selector';
+import {PaginatorComponent} from '../../../core/paginator/paginator.component';
+import {PageEvent} from '../../../core/models/pagination';
 
 @Component({
   selector: 'app-search',
   standalone: true,
-  imports: [SearchInputComponent, PokemonPreviewComponent, CommonModule],
+  imports: [SearchInputComponent, PokemonPreviewComponent, CommonModule, PaginatorComponent],
   templateUrl: './search.component.html',
   styleUrl: './search.component.scss',
 })
 export class SearchComponent implements OnInit {
+  @ViewChild(PaginatorComponent) paginatorComponent!: PaginatorComponent;
   pokemons$ = this.store.select(selectPokemons);
-  page$ = this.store.select(selectPage);
+  pokemonsLength$ = this.store.select(selectPokemonsLength);
+  page: PageEvent = {} as PageEvent;
 
   value = '';
 
@@ -33,13 +37,12 @@ export class SearchComponent implements OnInit {
 
   onSearch(name: string): void {
     this.value = name;
-    this.store.dispatch(PokemonActions.getPokemonsByName({name}));
+    this.paginatorComponent.firstPage();
+    // this.store.dispatch(PokemonActions.getPokemonsByName({name, page: this.page}));
   }
 
-  onClickPrev() {}
-
-  onClickNext() {
-    this.store.dispatch(PokemonActions.nextPage());
-    this.store.dispatch(PokemonActions.getPokemonsByName({name: this.value}));
+  onChangePage(event: PageEvent) {
+    this.page = event;
+    this.store.dispatch(PokemonActions.getPokemonsByName({name: this.value, page: event}));
   }
 }

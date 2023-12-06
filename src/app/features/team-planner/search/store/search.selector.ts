@@ -8,4 +8,7 @@ export const selectPokemons = createSelector(
   (pokemons) => pokemons.pokemons,
 );
 
-export const selectPage = createSelector(selectPokemonsFeature, (state) => state.page);
+export const selectPokemonsLength = createSelector(
+  selectPokemonsFeature,
+  (pokemons) => pokemons.length,
+);
