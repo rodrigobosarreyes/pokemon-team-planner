@@ -1,12 +1,12 @@
 <div class="search-input-container">
-  <form (submit)="onClickSearch($event)">
+  <form (submit)="onClickSearch($event)" [formGroup]="form">
     <input
       type="text"
       name="search"
       id="search"
       placeholder="Name..."
       autocomplete="off"
-      [(ngModel)]="value"
+      formControlName="valor"
     />
     <button>Search</button>
   </form>

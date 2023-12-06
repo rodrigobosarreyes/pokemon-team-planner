@@ -1,22 +1,30 @@
-import {Component, EventEmitter, Output} from '@angular/core';
-import {FormsModule} from '@angular/forms';
+import {Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
+import {debounceTime} from 'rxjs';
 
 @Component({
   selector: 'app-search-input',
   standalone: true,
-  imports: [FormsModule],
+  imports: [FormsModule, ReactiveFormsModule],
   templateUrl: './search-input.component.html',
   styleUrl: './search-input.component.scss',
 })
-export class SearchInputComponent {
+export class SearchInputComponent implements OnInit {
   @Output() readonly search = new EventEmitter<string>();
 
-  value = '';
+  form: FormGroup = new FormGroup({
+    valor: new FormControl(''),
+  });
+
+  ngOnInit(): void {
+    this.form
+      .get('valor')
+      ?.valueChanges.pipe(debounceTime(500))
+      .subscribe((v) => this.search.emit(v ?? ''));
+  }
 
   onClickSearch(event: Event) {
     event.stopPropagation();
     event.preventDefault();
-
-    this.search.emit(this.value);
   }
 }

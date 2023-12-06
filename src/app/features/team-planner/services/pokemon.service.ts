@@ -33,7 +33,7 @@ export class PokemonService {
     return this.apollo
       .watchQuery({
         query: gql`{
-          pokemon_v2_pokemon(limit: 10, where: {name: {_ilike: "%${name}%"}}) {
+          pokemon_v2_pokemon(limit: 20, where: {name: {_ilike: "%${name}%"}}) {
             id
             name
             pokemon_v2_pokemontypes {
