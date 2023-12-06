@@ -19,7 +19,7 @@ export class SearchInputComponent implements OnInit {
   ngOnInit(): void {
     this.form
       .get('valor')
-      ?.valueChanges.pipe(debounceTime(500))
+      ?.valueChanges.pipe(debounceTime(300))
       .subscribe((v) => this.search.emit(v ?? ''));
   }
 

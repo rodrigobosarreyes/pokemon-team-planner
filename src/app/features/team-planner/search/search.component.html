@@ -1,4 +1,7 @@
 <div class="search-container">
+  {{ page$ | async | json }}
+  <button (click)="onClickPrev()"><</button>
+  <button (click)="onClickNext()">></button>
   <app-search-input (search)="onSearch($event)" />
   <div class="pokemons">
     @for (pokemon of pokemons$ | async; track $index) {

@@ -6,7 +6,7 @@ import {PokemonPreviewComponent} from '../team-preview/pokemon-preview/pokemon-p
 import {Pokemon} from '../../../core/models/pokemon';
 import {PokemonActions} from './store/search.actions';
 import {CommonModule} from '@angular/common';
-import {selectPokemons} from './store/search.selector';
+import {selectPage, selectPokemons} from './store/search.selector';
 
 @Component({
   selector: 'app-search',
@@ -17,6 +17,9 @@ import {selectPokemons} from './store/search.selector';
 })
 export class SearchComponent implements OnInit {
   pokemons$ = this.store.select(selectPokemons);
+  page$ = this.store.select(selectPage);
+
+  value = '';
 
   constructor(private store: Store) {}
 
@@ -29,6 +32,14 @@ export class SearchComponent implements OnInit {
   }
 
   onSearch(name: string): void {
+    this.value = name;
     this.store.dispatch(PokemonActions.getPokemonsByName({name}));
+  }
+
+  onClickPrev() {}
+
+  onClickNext() {
+    this.store.dispatch(PokemonActions.nextPage());
+    this.store.dispatch(PokemonActions.getPokemonsByName({name: this.value}));
   }
 }
