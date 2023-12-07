@@ -1,11 +1,4 @@
 <div class="search-container">
-  {{ page | json }}
-  <app-paginator
-    [length]="(pokemonsLength$ | async) || 0"
-    [pageSize]="10"
-    [pageSizeOptions]="[5, 10, 15, 20]"
-    (page)="onChangePage($event)"
-  />
   <app-search-input (search)="onSearch($event)" />
   <div class="pokemons">
     @for (pokemon of pokemons$ | async; track $index) {
@@ -14,4 +7,10 @@
       </div>
     }
   </div>
+  <app-paginator
+    [length]="(pokemonsLength$ | async) || 0"
+    [pageSize]="20"
+    [pageSizeOptions]="[5, 10, 15, 20]"
+    (page)="onChangePage($event)"
+  />
 </div>

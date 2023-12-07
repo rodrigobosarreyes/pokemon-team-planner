@@ -1,4 +1,4 @@
-import {Component, Input, Output} from '@angular/core';
+import {Component, Input, OnInit, Output} from '@angular/core';
 import {PaginatorStore} from '../store/paginator.store';
 import {AsyncPipe, JsonPipe, NgIf} from '@angular/common';
 
@@ -10,7 +10,7 @@ import {AsyncPipe, JsonPipe, NgIf} from '@angular/common';
   styleUrl: './paginator.component.scss',
   providers: [PaginatorStore],
 })
-export class PaginatorComponent {
+export class PaginatorComponent implements OnInit {
   @Input() set pageIndex(value: string | number) {
     this.paginatorStore.setPageIndex(value);
   }
@@ -30,8 +30,24 @@ export class PaginatorComponent {
   @Output() readonly page = this.paginatorStore.page$;
 
   readonly vm$ = this.paginatorStore.vm$;
+  visiblePages: number[] = [];
 
   constructor(private readonly paginatorStore: PaginatorStore) {}
+
+  ngOnInit(): void {
+    this.paginatorStore.vm$.subscribe((n) => {
+      const length = Math.min(n.numberOfPages, 5);
+      const startIndex = Math.max(
+        Math.min(n.pageIndex - Math.ceil(length / 2), n.numberOfPages - length),
+        0,
+      );
+      this.visiblePages = Array.from(new Array(length).keys(), (item) => item + startIndex + 1);
+    });
+  }
+
+  onClickPage(i: number) {
+    this.paginatorStore.setPageIndex(i);
+  }
 
   changePageSize(newPageSize: number) {
     this.paginatorStore.changePageSize(newPageSize);

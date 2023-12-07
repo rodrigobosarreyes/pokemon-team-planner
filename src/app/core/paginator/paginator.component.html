@@ -1,5 +1,14 @@
-<div class="mat-paginator-outer-container" *ngIf="vm$ | async as vm">
-  {{ vm | json }}
-  <button (click)="previousPage()">Prev</button>
-  <button (click)="nextPage()">Next</button>
+<div class="paginator-container" *ngIf="vm$ | async as vm">
+  <div class="range-label">
+    {{ vm.rangeLabel }}
+  </div>
+  <div class="buttons">
+    <button (click)="firstPage()"><<</button>
+    <button (click)="previousPage()"><</button>
+    @for (i of visiblePages; track $index) {
+      <button [class.active]="i === vm.pageIndex" (click)="onClickPage(i)">{{ i }}</button>
+    }
+    <button (click)="nextPage()">></button>
+    <button (click)="lastPage()">>></button>
+  </div>
 </div>

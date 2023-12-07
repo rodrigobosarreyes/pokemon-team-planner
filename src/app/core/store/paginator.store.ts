@@ -71,7 +71,7 @@ export class PaginatorStore extends ComponentStore<PaginatorState> {
     if (length === 0 || pageSize === 0) return `0 of ${length}`;
 
     length = Math.max(length, 0);
-    const startIndex = pageIndex * pageSize;
+    const startIndex = pageIndex * pageSize - pageSize;
 
     const endIndex =
       startIndex < length ? Math.min(startIndex + pageSize, length) : startIndex + pageSize;
@@ -84,13 +84,15 @@ export class PaginatorStore extends ComponentStore<PaginatorState> {
     this.hasPreviousPage$,
     this.hasNextPage$,
     this.rangeLabel$,
-    (state, hasPreviousPage, hasNextPage, rangeLabel) => ({
+    this.numberOfPages$,
+    (state, hasPreviousPage, hasNextPage, rangeLabel, numberOfPages) => ({
       pageSize: state.pageSize,
       pageSizeOptions: Array.from(state.pageSizeOptions),
       pageIndex: state.pageIndex,
       hasPreviousPage,
       hasNextPage,
       rangeLabel,
+      numberOfPages,
     }),
   );
 
@@ -146,7 +148,7 @@ export class PaginatorStore extends ComponentStore<PaginatorState> {
       withLatestFrom(this.hasNextPage$, this.numberOfPages$),
       filter(([, hasNextPage]) => hasNextPage),
       tap(([, , numberOfPages]) => {
-        this.setPageIndex(numberOfPages - 1);
+        this.setPageIndex(numberOfPages);
       }),
     );
   });
