@@ -1,6 +1,6 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
-import {FormControl, FormGroup, FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {debounceTime} from 'rxjs';
+import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from '@angular/forms';
+import {debounceTime, filter} from 'rxjs';
 
 @Component({
   selector: 'app-search-input',
@@ -13,13 +13,16 @@ export class SearchInputComponent implements OnInit {
   @Output() readonly search = new EventEmitter<string>();
 
   form: FormGroup = new FormGroup({
-    valor: new FormControl(''),
+    valor: new FormControl('', Validators.pattern(/^[a-zA-Z\s]*$/)),
   });
 
   ngOnInit(): void {
     this.form
       .get('valor')
-      ?.valueChanges.pipe(debounceTime(300))
+      ?.valueChanges.pipe(
+        filter(() => this.form.get('valor')!.valid),
+        debounceTime(300),
+      )
       .subscribe((v) => this.search.emit(v ?? ''));
   }
 
