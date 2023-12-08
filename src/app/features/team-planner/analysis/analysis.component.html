@@ -1,1 +1,7 @@
-<p>analysis works!</p>
+<div class="analysis-container">
+  <div class="weakness">
+    @for (pokemonType of weakness; track $index) {
+      <span [appPokemonType]="pokemonType">{{ pokemonType | titlecase }}</span>
+    }
+  </div>
+</div>

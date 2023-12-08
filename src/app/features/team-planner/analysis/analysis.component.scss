@@ -1,0 +1,12 @@
+.analysis-container {
+  border-radius: 10px;
+  padding: 30px 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  background-color: #d5f3f8;
+
+  span {
+    margin-right: 6px;
+  }
+}
