@@ -10,6 +10,7 @@ import {PokeTypeService} from './services/poke-type.service';
   selector: 'app-analysis',
   standalone: true,
   imports: [AsyncPipe, PokemonTypeDirective, TitleCasePipe],
+  providers: [PokeTypeService],
   templateUrl: './analysis.component.html',
   styleUrl: './analysis.component.scss',
 })

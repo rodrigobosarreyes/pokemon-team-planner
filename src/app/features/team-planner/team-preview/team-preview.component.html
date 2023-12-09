@@ -1,5 +1,7 @@
-<div class="team-container">
-  @for (pokemon of team; track $index) {
-    <app-pokemon-preview [pokemon]="pokemon" (clickPokemon)="onClickPokemon($event)" />
-  }
-</div>
+@if (team.length > 0) {
+  <div class="team-container">
+    @for (pokemon of team; track $index) {
+      <app-pokemon-preview [pokemon]="pokemon" (clickPokemon)="onClickPokemon($event)" />
+    }
+  </div>
+}

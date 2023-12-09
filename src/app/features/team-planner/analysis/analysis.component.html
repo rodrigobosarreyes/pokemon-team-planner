@@ -1,7 +1,14 @@
-<div class="analysis-container">
-  <div class="weakness">
-    @for (pokemonType of weakness; track $index) {
-      <span [appPokemonType]="pokemonType">{{ pokemonType | titlecase }}</span>
-    }
+@if ((team$ | async)!.length > 0) {
+  <div class="analysis-container">
+    <h2>Uncovered types</h2>
+    <div class="weakness">
+      @if (weakness.length > 0) {
+        @for (pokemonType of weakness; track $index) {
+          <span [appPokemonType]="pokemonType">{{ pokemonType | titlecase }}</span>
+        }
+      } @else {
+        <h3>Your team is able to cover all types. Good work!</h3>
+      }
+    </div>
   </div>
-</div>
+}

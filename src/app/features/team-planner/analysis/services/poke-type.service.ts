@@ -5,9 +5,7 @@ import {Pokemon} from '../../../../core/models/pokemon';
 
 export type Weakness = {[key: string]: number};
 
-@Injectable({
-  providedIn: 'root',
-})
+@Injectable()
 export class PokeTypeService {
   EFFECTIVENESS = pokeTypes.effectiveness;
 
