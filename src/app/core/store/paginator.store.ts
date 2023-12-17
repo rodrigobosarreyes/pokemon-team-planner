@@ -50,7 +50,7 @@ export class PaginatorStore extends ComponentStore<PaginatorState> {
   });
 
   readonly hasPreviousPage$ = this.select(
-    ({pageIndex, pageSize}) => pageIndex >= 1 && pageSize != 0,
+    ({pageIndex, pageSize}) => pageIndex >= 2 && pageSize != 0,
   );
 
   readonly numberOfPages$ = this.select(({pageSize, length}) => {
@@ -62,7 +62,7 @@ export class PaginatorStore extends ComponentStore<PaginatorState> {
     this.state$,
     this.numberOfPages$,
     ({pageIndex, pageSize}, numberOfPages) => {
-      const maxPageIndex = numberOfPages - 1;
+      const maxPageIndex = numberOfPages;
       return pageIndex < maxPageIndex && pageSize != 0;
     },
   );

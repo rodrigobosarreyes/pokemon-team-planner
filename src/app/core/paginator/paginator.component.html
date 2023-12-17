@@ -3,12 +3,16 @@
     {{ vm.rangeLabel }}
   </div>
   <div class="buttons">
-    <button (click)="firstPage()"><<</button>
-    <button (click)="previousPage()"><</button>
+    @if (vm.hasPreviousPage) {
+      <button (click)="firstPage()"><<</button>
+      <button (click)="previousPage()"><</button>
+    }
     @for (i of visiblePages; track $index) {
       <button [class.active]="i === vm.pageIndex" (click)="onClickPage(i)">{{ i }}</button>
     }
-    <button (click)="nextPage()">></button>
-    <button (click)="lastPage()">>></button>
+    @if (vm.hasNextPage) {
+      <button (click)="nextPage()">></button>
+      <button (click)="lastPage()">>></button>
+    }
   </div>
 </div>

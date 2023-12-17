@@ -38,7 +38,6 @@ export class SearchComponent implements OnInit {
   onSearch(name: string): void {
     this.value = name;
     this.paginatorComponent.firstPage();
-    // this.store.dispatch(PokemonActions.getPokemonsByName({name, page: this.page}));
   }
 
   onChangePage(event: PageEvent) {
