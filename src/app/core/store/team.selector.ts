@@ -1,6 +1,6 @@
 import {createFeatureSelector, createSelector} from '@ngrx/store';
-import {Pokemon} from '../models/pokemon';
+import {TeamState, teamAdapter} from './team.reducer';
 
-export const selectTeamFeature = createFeatureSelector<ReadonlyArray<Pokemon>>('team');
+export const selectTeamFeature = createFeatureSelector<TeamState>('team');
 
-export const selectTeam = createSelector(selectTeamFeature, (team) => team);
+export const selectTeam = createSelector(selectTeamFeature, teamAdapter.getSelectors().selectAll);
